@@ -5,15 +5,18 @@ const promptSchema = new mongoose.Schema({
     model: {type: String, required: true},
     country: {type: String, required: true},
     answer: {type: String, required: true},
+    mentioned: {type: Boolean, require:true, default: false}, // weather brand was mentioned for particular prompt by particular LLM on given date
     avrRank: {type: String},
-    totalCitations: {type: Array},
-    uniqueCitations: {Array},
+    totalCitations: {type: Array, default:[]},
+    uniqueCitations: {type: Array, default: []},
     visibilityScore: {type: String}, // visibility frequency
     citationScore: {type: String}, // citation frequency
     brandCitationScore: {type: String},
-    highAuthSource: {type: Array},
-    mediumAuthSource: {type: Array}, 
-    lowAuthSource: {type: Array}
+    createdAt:{
+        type: Date,
+        default: Date.now
+    }
+
 })
 
 const Prompt = mongoose.model("Prompt", promptSchema)

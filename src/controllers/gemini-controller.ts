@@ -42,6 +42,12 @@ export const visibility = async (req: Request, res: Response)=>{
        answer: textWithCitations,
        totalCitations: totalUrls,
        uniqueCitations: uniqueUrls,
+       position: 3, 
+       NoOfMentions: 0,
+       NoOfCitations: 0,
+       relevance: 1,
+       sourceWeight: 1,
+       authority: 1, 
        visibilityScore: '',
        citationScore: '',
        brandCitationScore: ''
