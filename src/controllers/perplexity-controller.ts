@@ -5,7 +5,7 @@ import {PERPLEXITY_MODELS} from '../config/models'
 import { brandMentioned } from '../utils/brandVisibility';
 import { keywords } from '../config/brand';
 import { checkCitations } from '../utils/crawler';
-import Prompt from '../models/visibility'; 
+import Prompt from '../models/prompt'; 
 
 // const client = new OpenAI({
 //     apiKey: PERPLEXITY_API_KEY,

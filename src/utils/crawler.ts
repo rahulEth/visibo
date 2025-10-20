@@ -1,6 +1,7 @@
 import * as cheerio from "cheerio";
 import { response } from "express";
-
+import { keywords } from '../config/brand';
+import { brandMentioned } from '../utils/brandVisibility';
 // Define your brand name patterns
 const brandPatterns = ["Sagar Ratna", "sagarratna.in", "sagar ratna"];
 
@@ -38,6 +39,16 @@ async function brandMentionedInURL(url: string, brandPatterns: string[]) {
   }
 }
 
+export async function uniqueUrlsFn(response:any){
+  const chunks = response.candidates[0]?.groundingMetadata?.groundingChunks;
+  const uniqueUrls = chunks.map((chunk:any) =>{
+        return chunk.web.uri
+        // return  {title: chunk.web.title, uri: chunk.web.uri}      
+  })
+  
+  return await checkCitations(uniqueUrls, keywords) 
+}
+
 export async function checkCitations(citations: string[], brandPatterns: string[]) {
   const results = await Promise.allSettled(
     citations.map(uri => brandMentionedInURL(uri, brandPatterns))
@@ -48,6 +59,53 @@ export async function checkCitations(citations: string[], brandPatterns: string[
 //     mentioned: results[i].status === "fulfilled" ? results[i].value.status : false
 //   }));
    return results
+}
+
+
+export async function addCitations(response:any) {
+    let text = response.text;
+    let mentioned = false
+    let totalUrls: string[] = []
+    const supports = response.candidates[0]?.groundingMetadata?.groundingSupports;
+    const chunks = response.candidates[0]?.groundingMetadata?.groundingChunks;
+    console.log({supports, chunks})
+
+    // Sort supports by end_index in descending order to avoid shifting issues when inserting.
+    const sortedSupports = [...supports].sort(
+        (a, b) => (b.segment?.endIndex ?? 0) - (a.segment?.endIndex ?? 0),
+    );
+    mentioned = brandMentioned(text, keywords)
+    for (const support of sortedSupports) {
+        //  console.log("------------ segment", support.segment)
+        //  console.log("------------ groundingChunkIndices", support.groundingChunkIndices)
+        const endIndex = support.segment?.endIndex;
+        if (endIndex === undefined || !support.groundingChunkIndices?.length) {
+        continue;
+        }
+        const citationLinks =  await Promise.all(
+          support.groundingChunkIndices
+          .map(async (i:number) => {
+              // console.log("citationLinks ---- ", chunks[i]?.web?.uri, chunks[i]?.web?.title)
+              const uri = chunks[i]?.web?.uri;
+              const tittle = chunks[i]?.web?.title;
+  
+              if (uri) {
+              const resp =  await fetch(uri, {redirect:"follow"})
+              return `${tittle}[${i + 1}](${resp.url})`;
+              }
+              return null;
+          })
+         .filter(Boolean))
+        //  console.log("citationLinks------- ", citationLinks)
+        totalUrls = [...totalUrls, ...citationLinks]
+        if (citationLinks.length > 0) {
+          const citationString = citationLinks.join(", ");
+          // console.log("startwith ---------", endIndex)
+          text = text.slice(0, endIndex) + ' ' + citationString + text.slice(endIndex);
+        }
+    }
+
+    return {textWithCitations: text, totalUrls, mentioned};
 }
 
 // Example usage
