@@ -51,6 +51,109 @@ RESULT:
 }
 ```
 
+1. chatGPT
+a. GET: 
+http://localhost:5000/api/openai/visibility?model=chatGPT&contents=list top 10 veg restorent in noida&country =IN&version=gpt-5
+
+RESULT: 
+
+```
+{
+    "status": "success",
+    "message": "gemini result successful",
+    "prompt": "list top 10 veg restorent in noida",
+    "answer": "Here are 10 popular pure‑veg restaurants in Noida you can try:\n\n- Burma Burma, DLF Mall of India (Sector 18) – Burmese vegetarian menu, lots of vegan options. ([zomato.com](https://www.zomato.com/ncr/burma-burma-noida-sector-18-noida?utm_source=openai))\n- Naivedyam, Sector 63 – classic South Indian thalis and dosas; family‑friendly. ([zomato.com](https://www.zomato.com/ncr/naivedyam-sector-63-noida?utm_source=openai))\n- Sagar Ratna, Sector 18 (also at Starling Mall, Sec 104/110) – dependable South Indian chain, Jain options. ([zomato.com](https://www.zomato.com/ncr/sagar-ratna-sector-18-noida?utm_source=openai))\n- Shree Rathnam, DLF Mall of India (Sector 18) – pure‑veg South/North Indian. ([zomato.com](https://www.zomato.com/ncr/shree-rathnam-sector-18-noida?utm_source=openai))\n- Bikanervala, Silver Tower (Sector 18) – veg multi‑cuisine, chaat and sweets. ([zomato.com](https://www.zomato.com/ncr/bikanervala-sector-18-noida?utm_source=openai))\n- Haldiram’s, Sector 18 (and MOI) – large veg menu; quick service. ([zomato.com](https://www.zomato.com/ncr/haldirams-3-sector-18-noida?utm_source=openai))\n- Lakshmi Coffee House, Brahmaputra Market (Sector 29) – old‑favorite Udupi spot; filter coffee. ([zomato.com](https://www.zomato.com/ncr/lakshmi-coffee-house-sector-29-noida?utm_source=openai))\n- Imly, DLF Mall of India (Sector 18) – vegetarian street‑food style menu. ([zomato.com](https://www.zomato.com/ncr/imly-sector-18-noida?utm_source=openai))\n- Govinda’s (ISKCON Noida, Sector 33) – sattvik, no onion/garlic; peaceful ambience. ([zomato.com](https://www.zomato.com/tr/ncr/govindas-restaurant-sector-33-noida/order?utm_source=openai))\n- Udupi Krishna Restaurant (Sector 101/137) – pure‑veg South Indian near the metro. ([ukr.co.in](https://www.ukr.co.in/?utm_source=openai))\n\nIf you tell me your area, budget, or cuisine (South Indian, chaat, thali, etc.), I can narrow this to the best 3–5 for you.",
+    "totalUrls": [
+        "https://www.zomato.com/ncr/burma-burma-noida-sector-18-noida?utm_source=openai",
+        "https://www.zomato.com/ncr/naivedyam-sector-63-noida?utm_source=openai",
+        "https://www.zomato.com/ncr/sagar-ratna-sector-18-noida?utm_source=openai",
+        "https://www.zomato.com/ncr/shree-rathnam-sector-18-noida?utm_source=openai",
+        "https://www.zomato.com/ncr/bikanervala-sector-18-noida?utm_source=openai",
+        "https://www.zomato.com/ncr/haldirams-3-sector-18-noida?utm_source=openai",
+        "https://www.zomato.com/ncr/lakshmi-coffee-house-sector-29-noida?utm_source=openai",
+        "https://www.zomato.com/ncr/imly-sector-18-noida?utm_source=openai",
+        "https://www.zomato.com/tr/ncr/govindas-restaurant-sector-33-noida/order?utm_source=openai",
+        "https://www.ukr.co.in/?utm_source=openai"
+    ],
+    "uniqueUrls": [
+        {
+            "status": "fulfilled",
+            "value": {
+                "mentioned": false,
+                "url": "https://www.zomato.com/ncr/burma-burma-noida-sector-18-noida?utm_source=openai"
+            }
+        },
+        {
+            "status": "fulfilled",
+            "value": {
+                "mentioned": false,
+                "url": "https://www.zomato.com/ncr/naivedyam-sector-63-noida?utm_source=openai"
+            }
+        },
+        {
+            "status": "fulfilled",
+            "value": {
+                "mentioned": false,
+                "url": "https://www.zomato.com/ncr/sagar-ratna-sector-18-noida?utm_source=openai"
+            }
+        },
+        {
+            "status": "fulfilled",
+            "value": {
+                "mentioned": true,
+                "url": "https://www.zomato.com/ncr/shree-rathnam-sector-18-noida?utm_source=openai"
+            }
+        },
+        {
+            "status": "fulfilled",
+            "value": {
+                "mentioned": false,
+                "url": "https://www.zomato.com/ncr/bikanervala-sector-18-noida?utm_source=openai"
+            }
+        },
+        {
+            "status": "fulfilled",
+            "value": {
+                "mentioned": false,
+                "url": "https://www.zomato.com/ncr/haldirams-3-sector-18-noida?utm_source=openai"
+            }
+        },
+        {
+            "status": "fulfilled",
+            "value": {
+                "mentioned": false,
+                "url": "https://www.zomato.com/ncr/lakshmi-coffee-house-sector-29-noida?utm_source=openai"
+            }
+        },
+        {
+            "status": "fulfilled",
+            "value": {
+                "mentioned": false,
+                "url": "https://www.zomato.com/ncr/imly-sector-18-noida?utm_source=openai"
+            }
+        },
+        {
+            "status": "fulfilled",
+            "value": {
+                "mentioned": false,
+                "url": "https://www.zomato.com/tr/ncr/govindas-restaurant-sector-33-noida/order?utm_source=openai"
+            }
+        },
+        {
+            "status": "fulfilled",
+            "value": {
+                "mentioned": false,
+                "url": "https://www.ukr.co.in/?utm_source=openai"
+            }
+        }
+    ],
+    "mentioned": true,
+    "visibilityScore": "33.33",
+    "visibilityRank": 3,
+    "citationScore": "10.00",
+    "citationRank": 0
+}
+```
 ## steps for builiding from scratch 
 
 ```

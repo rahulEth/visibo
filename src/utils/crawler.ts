@@ -108,6 +108,32 @@ export async function addCitations(response:any) {
     return {textWithCitations: text, totalUrls, mentioned};
 }
 
+export function extractData(events: any) {
+  // Collect search queries
+  const searches = events
+    .filter((e:any) => e.type === "web_search_call" && e.status === "completed")
+    .map((e:any) => e.action?.query)
+    .filter(Boolean); // remove undefined
+
+  // Collect URLs from message annotations
+  let totalUrls:any = [];
+  const message = events.find((e:any) => e.type === "message" && e.status === "completed");
+  if (message && message.content) {
+    message.content.forEach((block:any) => {
+      if (block.annotations) {
+        block.annotations.forEach((a:any) => {
+          if (a.type === "url_citation") {
+            // urls.push({ title: a.title, url: a.url });
+            totalUrls.push(a.url);
+          }
+        });
+      }
+    });
+  }
+
+  return { searches, totalUrls };
+}
+
 // Example usage
 const citations = [
   "https://www.quora.com/What-is-an-all-vegetarian-multicuisine-restaurant-in-Noida"
@@ -145,3 +171,5 @@ async function checkForSagarRatna() {
 }
 
 // checkForSagarRatna();
+
+
