@@ -34,6 +34,11 @@ const matrixSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,  // Primary–Foreign Key Mapping
         ref: 'Prompt'
     },
+    quries:{
+        type: mongoose.Schema.Types.Array,
+        required: false,
+        default: []
+    },
     createdAt: {
         type: Date,
         default: Date.now,

@@ -88,7 +88,7 @@ export const visibility = async (req: Request, res: Response)=>{
       citationScore: formatDecimal(citationScore),
     }
     await Matrix.create({
-      promot: prompt._id,
+      prompt: prompt._id,
       date: new Date(),
       ...newMatrics,
       totalCitations: totalUrls,

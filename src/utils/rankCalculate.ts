@@ -110,6 +110,54 @@ export function visibilityMatrixChatGPT(text: string, targetBrand: string[]): Ex
   };
 }
 
+export function visibilityMatrixPerplexity(text: string, targetBrand: string[]): ExtractedResult {
+  // Split the text into lines starting with "-"
+  const lines = text
+    .split("\n")
+    .map(line => line.trim())
+    .filter(line => line.startsWith("-"));
+
+  const brandRanks: BrandRanks = {};
+
+  lines.forEach((line, index) => {
+    // Extract brand name before the first comma or parenthesis
+    const match = line.match(/^- ([^,(\n]+)/);
+    if (match && match[1]) {
+      const brandName = match[1].trim();
+      brandRanks[brandName] = index + 1;
+    }
+  });
+
+
+  let targetRank = 0;
+  let matchValue:string | undefined = '';
+  console.log("brandRanks:----- ",  JSON.stringify(brandRanks, null, 2))
+  for (const [name, r] of Object.entries(brandRanks)) {
+    // console.log("name, normalizedTarget", name, normalizedTarget)
+    
+    // find first matching value (case-insensitive & punctuation-insensitive)
+    matchValue = targetBrand.find(item => normalize(item).includes(normalize(name)));
+    if (matchValue) {
+      targetRank = r;
+    }
+  }
+  // visibilityScore = f*w*r*p
+
+  // f = freq-of-brand-metion (assuming only once brand is mentioned in answer)
+  // w = wight-based-on-position 
+  // r= relevance score of metion to the query /topic
+  // p = platfrom weight 
+  let visibilityScore = '0';
+  if(targetRank){
+    visibilityScore = ((1 * (1/targetRank) * 1 * 1)* 100).toFixed(2)
+  }
+  return {
+    // targetBrand: matchValue,
+    visibilityScore,
+    targetRank,
+    allBrands: brandRanks,
+  };
+}
 
 // Example usage
 const text = 

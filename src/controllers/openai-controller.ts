@@ -40,28 +40,7 @@ export const visibility = async (req: Request, res: Response)=>{
         },
       ],
     });
-  
-    //console.log("---------------1---------------------")
-    // console.log("output 0======== ", response.output[0]) // contain query asked
-    //console.log("---------------2---------------------")
 
-    // console.log("----------------", response) // output text
-    //console.log("---------------3---------------------")
-
-    // console.log("respo------ ", response.output[1].content[0]) //url,location and location of the ploace
-
-
-//  const {textWithCitations, totalUrls, mentioned} = await addCitations(response.output);
-console.log("response----- ",response)
-// what all promnts it considering while answering
- const { searches, totalUrls } = extractData(response.output)
-
-  const mentioned = brandMentioned(response.output_text, keywords)
-    console.log("response.output_text....... ", response.output_text)
-    console.log('urls------ ', totalUrls,searches, mentioned)
-    const uniqueUrls = await checkCitations(totalUrls, keywords) 
-    const citationScore = citationScoreCalculate(uniqueUrls)
-    const vResult = visibilityMatrixChatGPT(response.output_text,keywords) 
     let prompt = await Prompt.findOne({prompt: contents, model: model})
     if(prompt){
       return res.status(409).json({
@@ -70,6 +49,16 @@ console.log("response----- ",response)
         message: `Entered prompt already exist`,
       });
     }
+    // what all promnts it considering while answering
+    const { searches, totalUrls } = extractData(response.output)
+
+    const mentioned = brandMentioned(response.output_text, keywords)
+    console.log("response.output_text....... ", response.output_text)
+    console.log('urls------ ', totalUrls,searches, mentioned)
+    const uniqueUrls = await checkCitations(totalUrls, keywords) 
+    const citationScore = citationScoreCalculate(uniqueUrls)
+    const vResult = visibilityMatrixChatGPT(response.output_text,keywords) 
+
     prompt = new Prompt({
        prompt: contents,
        model,
@@ -103,11 +92,12 @@ console.log("response----- ",response)
       citationScore: formatDecimal(citationScore),
     }
     await Matrix.create({
-      promot: prompt._id,
+      prompt: prompt._id,
       date: new Date(),
       ...newMatrics,
       totalCitations: totalUrls,
-      uniqueCitations: uniqueUrls
+      uniqueCitations: uniqueUrls,
+      quries: searches
 
     });
 
